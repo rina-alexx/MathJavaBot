@@ -11,8 +11,14 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Этот класс отвечает за  ReplyKeyboard и InlineKeyboard
+ */
 public class KeyboardFactory {
 
+
+    //Главное меню
     public static class ReplyKeyboard {
         public static ReplyKeyboardMarkup getMainMenuKeyboard() {
             KeyboardRow row1 = new KeyboardRow();
@@ -27,40 +33,33 @@ public class KeyboardFactory {
             replyKeyboardMarkup.setKeyboard(keyboard);
             replyKeyboardMarkup.setSelective(true);
             replyKeyboardMarkup.setResizeKeyboard(true);
-            replyKeyboardMarkup.setOneTimeKeyboard(false);
+            replyKeyboardMarkup.setOneTimeKeyboard(true);
 
             return replyKeyboardMarkup;
         }
 
-        public static ReplyKeyboardMarkup getVariantKeyboard() {
+        // /start => Помощь
+        public static ReplyKeyboardMarkup getVariantHelpKeyboard() {
             KeyboardRow row1 = new KeyboardRow();
-            row1.add(new KeyboardButton(ButtonNameEnum.TASK1_BUTTOM.getButtonName()));
-            row1.add(new KeyboardButton(ButtonNameEnum.TASK2_BUTTOM.getButtonName()));
-            row1.add(new KeyboardButton(ButtonNameEnum.TASK3_BUTTOM.getButtonName()));
-            row1.add(new KeyboardButton(ButtonNameEnum.TASK4_BUTTOM.getButtonName()));
-
-            KeyboardRow row2 = new KeyboardRow();
-            row2.add(new KeyboardButton(ButtonNameEnum.TASK5_BUTTOM.getButtonName()));
-            row2.add(new KeyboardButton(ButtonNameEnum.TASK6_BUTTOM.getButtonName()));
-            row2.add(new KeyboardButton(ButtonNameEnum.TASK7_BUTTOM.getButtonName()));
+            row1.add(new KeyboardButton("Решить задачу"));
 
 
             List<KeyboardRow> keyboard = new ArrayList<>();
             keyboard.add(row1);
-            keyboard.add(row2);
 
             final ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
             replyKeyboardMarkup.setKeyboard(keyboard);
             replyKeyboardMarkup.setSelective(true);
             replyKeyboardMarkup.setResizeKeyboard(true);
-            replyKeyboardMarkup.setOneTimeKeyboard(false);
+            replyKeyboardMarkup.setOneTimeKeyboard(true);
 
             return replyKeyboardMarkup;
-
         }
+
     }
 
-    public static class inlineKeyboard{
+    //Выбор варианта задачи
+    public static class inlineKeyboard {
         public static InlineKeyboardMarkup sendInlineKeyBoardMessageSolve() {
             InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
             InlineKeyboardButton task1 = new InlineKeyboardButton();
@@ -70,27 +69,27 @@ public class KeyboardFactory {
             InlineKeyboardButton task5 = new InlineKeyboardButton();
             InlineKeyboardButton task6 = new InlineKeyboardButton();
             InlineKeyboardButton task7 = new InlineKeyboardButton();
-            task1.setText("Задача №1");
-            //   task1.setCallbackData("Введите a, x, b, n, c: ");
+
+            task1.setText("№1");
             task1.setCallbackData("Task_1");
-            task2.setText("Задача №2");
-            // task2.setCallbackData("Введите y, x, gam, a: ");
+
+            task2.setText("№2");
             task2.setCallbackData("Task_2");
-            task3.setText("Задача №3");
-            //task3.setCallbackData("Введите a0, a1, a2, x: ");
-            task3.setCallbackData("3");
-            task4.setText("Задача №4");
-            //task4.setCallbackData("Введите a, x: ");
-            task4.setCallbackData("4");
-            task5.setText("Задача №5");
-            //task5.setCallbackData("Введите y, x, gam, a: ");
-            task5.setCallbackData("5");
-            task6.setText("Задача №6");
-            //  task6.setCallbackData("Введите a, b, c, d, x: ");
-            task6.setCallbackData("6");
-            task7.setText("Задача #7");
-            //  task7.setCallbackData("Введите x: ");
-            task7.setCallbackData("7");
+
+            task3.setText("№3");
+            task3.setCallbackData("Task_3");
+
+            task4.setText("№4");
+            task4.setCallbackData("Task_4");
+
+            task5.setText("№5");
+            task5.setCallbackData("Task_5");
+
+            task6.setText("№6");
+            task6.setCallbackData("Task_6");
+
+            task7.setText("№7");
+            task7.setCallbackData("Task_7");
 
             List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
             List<InlineKeyboardButton> keyboardButtonsRow2 = new ArrayList<>();
@@ -105,7 +104,8 @@ public class KeyboardFactory {
             rowList.add(keyboardButtonsRow1);
             rowList.add(keyboardButtonsRow2);
             inlineKeyboardMarkup.setKeyboard(rowList);
-            return  inlineKeyboardMarkup;
+
+            return inlineKeyboardMarkup;
         }
     }
 }

@@ -1,6 +1,7 @@
 package org.example;
 
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendChatAction;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
@@ -11,20 +12,41 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 
 public class Bot extends TelegramLongPollingBot {
 
-    boolean flag=false;
-    private static final String botUserName = "MathJavaBot";
-    private static final String token = "6110261665:AAHOIFAxmVf7-LwlZzvVbGPKXUhPeuTndUU";
+    /**
+     * Обработка входяших апдейтов и отправка сообщений
+     */
+    boolean flag = false;
     Task task = new Task();
+
     @Override
     public String getBotUsername() {
+        Properties properties = new Properties();
+        try {
+            properties.load(new FileInputStream(new File("C:/Users/rinaa/Downloads/email-demo/BotTelegA/src/main/resources/config.properties")));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        String botUserName = properties.getProperty("telegrambot.botusername");
+
         return botUserName;
     }
 
     @Override
     public String getBotToken() {
+        Properties properties = new Properties();
+        try {
+            properties.load(new FileInputStream(new File("C:/Users/rinaa/Downloads/email-demo/BotTelegA/src/main/resources/config.properties")));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        String token = properties.getProperty("telegrambot.token");
+
         return token;
     }
 
@@ -34,7 +56,7 @@ public class Bot extends TelegramLongPollingBot {
         if (update.hasMessage()) {
             Message message = update.getMessage();
             if (!message.getText().isEmpty()) {
-                System.out.println(message);
+                System.out.printf("New message '%s' from %s chatId: %d",message.getText(),message.getFrom().getUserName(),message.getChatId());
                 if (message.getText().equals("/start")) {
                     SendMessage sendMessage = new SendMessage();
                     sendMessage.setChatId(message.getChatId());
@@ -51,31 +73,40 @@ public class Bot extends TelegramLongPollingBot {
                     sendMessage.setChatId(message.getChatId());
                     sendMessage.setReplyMarkup(KeyboardFactory.inlineKeyboard.sendInlineKeyBoardMessageSolve());
                     try {
-                        sendImageFromFileId("C:/Users/rinaa/OneDrive/Изображения/Saved Pictures/formula.jpg",update.getMessage().getChatId());
+                        sendImageFromFileId("C:/Users/rinaa/OneDrive/Изображения/Saved Pictures/formula.jpg", update.getMessage().getChatId());
+                        execute(sendMessage);
+                    } catch (TelegramApiException e) {
+                        throw new RuntimeException(e);
+                    }
+                } else if (message.getText().equals("Помощь")) {
+                    SendMessage sendMessage = new SendMessage();
+                    sendMessage.setText("Для того, чтобы решить необходимую задачу, нажмите на <b>Решить задачу</b>" +
+                            "\n \nПеред вами появятся формулы и вы сможете выбрать необходимый вариант!");
+                    sendMessage.setChatId(message.getChatId());
+                    sendMessage.setReplyMarkup(KeyboardFactory.ReplyKeyboard.getVariantHelpKeyboard());
+                    sendMessage.setParseMode(ParseMode.HTML);
+                    try {
                         execute(sendMessage);
                     } catch (TelegramApiException e) {
                         throw new RuntimeException(e);
                     }
                 }
-                    if (flag){
-                        System.out.println("<KKKKKKKKKKKKKKKKKKK");
-                        task.setArguments(message.getText());
-                        System.out.println(task.getArguments());
-                        System.out.println(task.numbVariant);
-                        SendMessage sendMessage=new SendMessage();
-                        sendMessage.setText(task.askAnswer());
-                        sendMessage.setChatId(message.getChatId());
-                        flag=false;
+                else if (flag) {
+                    task.setArguments(message.getText());
+                    SendMessage sendMessage = new SendMessage();
+                    sendMessage.setText(task.askAnswer());
+                    sendMessage.setChatId(message.getChatId());
+                    sendMessage.setReplyMarkup(KeyboardFactory.ReplyKeyboard.getMainMenuKeyboard());
+                    flag = false;
 
-                        try {
-                            execute(sendMessage);
-                        } catch (TelegramApiException e) {
-                            throw new RuntimeException(e);
-                        }
+                    try {
+                        execute(sendMessage);
+                    } catch (TelegramApiException e) {
+                        throw new RuntimeException(e);
                     }
                 }
             }
-        else if (update.hasCallbackQuery()) {
+        } else if (update.hasCallbackQuery()) {
             CallbackQuery callbackQuery = update.getCallbackQuery();
             if (callbackQuery.getData().startsWith("Task_")) {
                 String mas[] = callbackQuery.getData().split("_");
@@ -86,7 +117,10 @@ public class Bot extends TelegramLongPollingBot {
                 task.setChatId(callbackQuery.getMessage().getChatId());
                 SendMessage sendMessage = new SendMessage();
                 sendMessage.setChatId(callbackQuery.getMessage().getChatId());
-                sendMessage.setText("Введите переменные для этого варианта: ");
+                sendMessage.setText("<i>через пробел вводите переменные по порядку как в варианте</i>" +
+                        "\n \n Введите переменные:");
+                sendMessage.setParseMode(ParseMode.HTML);
+
                 try {
                     execute(sendMessage);
                 } catch (TelegramApiException e) {
@@ -96,15 +130,14 @@ public class Bot extends TelegramLongPollingBot {
 
         }
     }
+
+
     public void sendImageFromFileId(String filePath, Long chatId) {
-        // Create send method
+
         SendPhoto sendPhotoRequest = new SendPhoto();
-        // Set destination chat id
         sendPhotoRequest.setChatId(chatId);
-        // Set the photo file as a new photo (You can also use InputStream with a constructor overload)
         sendPhotoRequest.setPhoto(new InputFile((new File(filePath))));
         try {
-            // Execute the method
             execute(sendPhotoRequest);
         } catch (TelegramApiException e) {
             e.printStackTrace();
