@@ -23,6 +23,7 @@ public class Bot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         Message message=update.getMessage();
+        System.out.println(message);
         if (message.getText().equals("/start")) {
             SendMessage sendMessage = new SendMessage();
             sendMessage.setChatId(message.getChatId());
@@ -34,6 +35,19 @@ public class Bot extends TelegramLongPollingBot {
                 throw new RuntimeException(e);
             }
         }
+        else if(message.getText().equals("Решить задачу")){
+            SendMessage sendMessage=new SendMessage();
+            sendMessage.setText("Выберите задачу");
+            sendMessage.setChatId(message.getChatId());
+            sendMessage.setReplyMarkup(KeyboardFactory.inlineKeyboard.sendInlineKeyBoardMessageSolve());
+            try {
+                execute(sendMessage);
+            } catch (TelegramApiException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+
     }
 
 }

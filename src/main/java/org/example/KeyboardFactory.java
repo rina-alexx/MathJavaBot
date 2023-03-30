@@ -75,22 +75,22 @@ public class KeyboardFactory {
             task1.setCallbackData("1");
             task2.setText("Задача №2");
             // task2.setCallbackData("Введите y, x, gam, a: ");
-            task2.setCallbackData("Task: 2");
+            task2.setCallbackData("2");
             task3.setText("Задача №3");
             //task3.setCallbackData("Введите a0, a1, a2, x: ");
-            task3.setCallbackData("Task: 3");
+            task3.setCallbackData("3");
             task4.setText("Задача №4");
             //task4.setCallbackData("Введите a, x: ");
-            task4.setCallbackData("Task: 4");
+            task4.setCallbackData("4");
             task5.setText("Задача №5");
             //task5.setCallbackData("Введите y, x, gam, a: ");
-            task5.setCallbackData("Task: 5");
+            task5.setCallbackData("5");
             task6.setText("Задача №6");
             //  task6.setCallbackData("Введите a, b, c, d, x: ");
-            task6.setCallbackData("Task: 6");
+            task6.setCallbackData("6");
             task7.setText("Задача #7");
             //  task7.setCallbackData("Введите x: ");
-            task7.setCallbackData("Task: 7");
+            task7.setCallbackData("7");
 
             List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
             List<InlineKeyboardButton> keyboardButtonsRow2 = new ArrayList<>();
