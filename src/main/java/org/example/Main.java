@@ -9,6 +9,5 @@ public class Main {
         TelegramBotsApi botsApi=new TelegramBotsApi(DefaultBotSession.class);
         botsApi.registerBot(new Bot());
         Bot bot=new Bot();
-        bot.task.getNumbVariant();
     }
 }

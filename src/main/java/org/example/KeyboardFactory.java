@@ -16,8 +16,8 @@ public class KeyboardFactory {
     public static class ReplyKeyboard {
         public static ReplyKeyboardMarkup getMainMenuKeyboard() {
             KeyboardRow row1 = new KeyboardRow();
-            row1.add(new KeyboardButton(ButtonNameEnum.SOLVE_BUTTON.getButtonName()));
-            row1.add(new KeyboardButton(ButtonNameEnum.HELP_BUTTON.getButtonName()));
+            row1.add(new KeyboardButton("Решить задачу"));
+            row1.add(new KeyboardButton("Помощь"));
 
 
             List<KeyboardRow> keyboard = new ArrayList<>();
