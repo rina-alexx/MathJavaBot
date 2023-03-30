@@ -72,10 +72,10 @@ public class KeyboardFactory {
             InlineKeyboardButton task7 = new InlineKeyboardButton();
             task1.setText("Задача №1");
             //   task1.setCallbackData("Введите a, x, b, n, c: ");
-            task1.setCallbackData("1");
+            task1.setCallbackData("Task_1");
             task2.setText("Задача №2");
             // task2.setCallbackData("Введите y, x, gam, a: ");
-            task2.setCallbackData("2");
+            task2.setCallbackData("Task_2");
             task3.setText("Задача №3");
             //task3.setCallbackData("Введите a0, a1, a2, x: ");
             task3.setCallbackData("3");
